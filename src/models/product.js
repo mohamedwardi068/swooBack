@@ -4,13 +4,13 @@ const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
   specs: { type: String },
   
-  // For products with a price range
+
   priceRange: {
     min: { type: Number },
     max: { type: Number },
   },
 
-  // Original price is still present for discount purposes
+  
   originalPrice: { type: Number },
   discount: { type: Number },
   

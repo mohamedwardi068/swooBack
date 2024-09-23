@@ -6,7 +6,7 @@ require("./config/connect.js");
 const server = http.createServer(app);
 
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 4000;
 
 async function startServer() {
   server.listen(port, function () {

@@ -5,6 +5,7 @@ const clientSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   phonenumber: { type: Number, required: true },
   password: { type: String, required: true },
+  
 });
 
 module.exports = mongoose.model("Client", clientSchema);
