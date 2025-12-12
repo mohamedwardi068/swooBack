@@ -23,7 +23,7 @@ exports.removeProduct = async (req, res) => {
 
     // Find and delete the product by ID
     const product = await productSchema.findByIdAndDelete(id);
-    
+
     if (product) {
       res.status(200).json({ message: "Product deleted successfully" });
     } else {
@@ -65,12 +65,12 @@ exports.updateProduct = async (req, res) => {
 exports.addProduct = async (req, res) => {
   try {
     const { name, specs, price, originalPrice, discount, shipping, availability, image, categoryId } = req.body;
-    
+
     // Ensure required fields are provided
     if (!name || !price || !categoryId) {
       return res.status(400).json({ message: "Name, price, and category ID are required" });
     }
-    
+
     console.log("Received data:", { name, specs, price, originalPrice, discount, shipping, availability, image, categoryId });
 
     // Create a new product
@@ -84,6 +84,7 @@ exports.addProduct = async (req, res) => {
       availability,
       image,
       category: categoryId, // Reference the category by its ID
+      sales: req.body.sales || 0,
       createdAt: Date.now(),
     });
 
@@ -93,5 +94,15 @@ exports.addProduct = async (req, res) => {
   } catch (error) {
     console.error("Error adding product:", error); // Detailed error logging
     res.status(500).json({ message: "Error adding product", error: error.message }); // Send the error message to the client
+  }
+};
+
+// Get Best Sellers
+exports.getBestSellers = async (req, res) => {
+  try {
+    const bestSellers = await productSchema.find().sort({ sales: -1 }).limit(4);
+    res.status(200).json(bestSellers);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching best sellers", error });
   }
 };

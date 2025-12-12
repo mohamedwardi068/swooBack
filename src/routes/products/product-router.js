@@ -9,5 +9,6 @@ productsRouter.get("/", productsController.getProducts); // Fetch all products
 productsRouter.delete("/remove/:id", productsController.removeProduct); // Remove a product by ID
 productsRouter.put("/update/:id", productsController.updateProduct);  // Update a product by ID
 productsRouter.post("/addProduct", productsController.addProduct); // Add a new product
+productsRouter.get("/best-sellers", productsController.getBestSellers); // Get best sellers
 
 module.exports = productsRouter;
