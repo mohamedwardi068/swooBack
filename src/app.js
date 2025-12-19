@@ -4,21 +4,23 @@ const api = require("./routes/api");
 
 const app = express();
 
-// Middleware
 const allowedOrigins = [
-  "http://localhost:3000", // for local dev
-  "https://swoo.vercel.app/" // your Vercel frontend
+  "http://localhost:3000",
+  "https://swoo.vercel.app"
 ];
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // allow server-to-server or Postman requests
-      if (!allowedOrigins.includes(origin)) {
-        const msg = "CORS policy does not allow access from this origin.";
-        return callback(new Error(msg), false);
+    origin: (origin, callback) => {
+      // allow requests with no origin (Postman, server-to-server)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       }
-      return callback(null, true);
+
+      // ❗ DO NOT throw an error — just block
+      return callback(null, false);
     },
     credentials: true
   })
@@ -27,10 +29,8 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
 app.use("/v1", api);
 
-// Health check (useful for Render/Railway)
 app.get("/", (req, res) => {
   res.send("API is running ✅");
 });
